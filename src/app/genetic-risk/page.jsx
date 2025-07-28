@@ -19,27 +19,34 @@ export default function GeneticRiskChecker() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!formData.familyHistory || !formData.lifestyle || !formData.medicalConditions) {
-      setError("Please fill in all fields");
-      return;
-    }
+  e.preventDefault();
 
-    setLoading(true);
-    setResult(null);
-    setError("");
+  if (!formData.familyHistory || !formData.lifestyle || !formData.medicalConditions) {
+    setError("Please fill in all fields");
+    return;
+  }
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chatbot/ask`, formData);
-      setResult(res.data);
-    } catch (err) {
-      console.error("Error calculating risk:", err);
-      setError("Error calculating risk. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  setResult(null);
+  setError("");
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/genetic/check-risk`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+    setResult(data);
+  } catch (err) {
+    console.error("Error calculating risk:", err);
+    setError("Error calculating risk. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

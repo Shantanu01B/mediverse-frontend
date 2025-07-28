@@ -25,7 +25,7 @@ export default function HealthChatbot() {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chatbot/ask`,{
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chatbot/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
@@ -87,18 +87,15 @@ export default function HealthChatbot() {
             ) : (
               <div className="space-y-4">
                 {messages.map((msg, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
-                  >
+                  <div key={idx} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                     <div
-                      className={`max-w-[80%] rounded-xl p-4 ${
-                        msg.sender === "user" 
-                          ? "bg-blue-600 text-white rounded-br-none" 
-                          : "bg-gray-100 border border-gray-200 rounded-bl-none"
+                      className={`max-w-[80%] rounded-xl p-4 text-base leading-relaxed font-medium shadow-md ${
+                        msg.sender === "user"
+                          ? "bg-blue-600 text-white rounded-br-none"
+                          : "bg-gray-200 text-gray-900 rounded-bl-none"
                       }`}
                     >
-                      <div className="whitespace-pre-wrap text-base leading-relaxed">
+                      <div className="whitespace-pre-wrap">
                         {msg.text.split('\n').map((paragraph, i) => (
                           <p key={i} className="mb-2 last:mb-0">{paragraph}</p>
                         ))}
@@ -108,7 +105,7 @@ export default function HealthChatbot() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gray-100 border border-gray-200 rounded-xl rounded-bl-none p-4 max-w-[80%]">
+                    <div className="bg-gray-200 text-gray-900 rounded-xl rounded-bl-none p-4 max-w-[80%] shadow-md">
                       <div className="flex space-x-2">
                         <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce"></div>
                         <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>

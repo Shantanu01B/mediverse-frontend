@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import axios from "axios";
 import {
   Stethoscope,
   HeartPulse,
@@ -23,16 +24,12 @@ export default function SymptomChecker() {
     setResponse("");
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chatbot/ask`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ symptom }),
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/symptoms/ask`, // 👈 correct endpoint
+        { symptom } // 👈 Axios handles JSON automatically
+      );
 
-      const data = await res.json();
-      setResponse(data.reply || data.error);
+      setResponse(res.data.reply || res.data.error || "No response received.");
     } catch (err) {
       console.error(err);
       setResponse("Something went wrong. Please try again later.");
@@ -43,7 +40,6 @@ export default function SymptomChecker() {
 
   return (
     <div className="relative min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Decorative Background Lucide Icons */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Stethoscope className="absolute top-12 left-8 text-indigo-300 w-24 h-24 opacity-40 rotate-12" />
         <HeartPulse className="absolute top-40 right-10 text-red-300 w-28 h-28 opacity-40 -rotate-6" />
@@ -54,15 +50,11 @@ export default function SymptomChecker() {
 
       <div className="relative z-10 max-w-5xl mx-auto">
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-          {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 text-white text-center">
             <h1 className="text-4xl font-bold">Symptom Checker</h1>
-            <p className="mt-2 text-xl opacity-95">
-              AI-Powered Health Analysis
-            </p>
+            <p className="mt-2 text-xl opacity-95">AI-Powered Health Analysis</p>
           </div>
 
-          {/* Input Section */}
           <div className="p-8 bg-white">
             <div className="flex flex-col sm:flex-row gap-4 items-center">
               <input
@@ -112,7 +104,6 @@ export default function SymptomChecker() {
             </p>
           </div>
 
-          {/* Results Section */}
           <div className="p-8 bg-gray-50 border-t border-gray-200">
             {response ? (
               <div className="space-y-4">
@@ -154,7 +145,6 @@ export default function SymptomChecker() {
             )}
           </div>
 
-          {/* Disclaimer */}
           <div className="bg-blue-50 border-t-2 border-blue-500 p-6">
             <div className="flex items-start">
               <svg

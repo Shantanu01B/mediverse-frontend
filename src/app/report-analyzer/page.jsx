@@ -8,32 +8,33 @@ const ReportAnalyzer = () => {
   const [loading, setLoading] = useState(false);
 
   const handleAnalyze = async () => {
-    if (!reportText.trim()) {
-      alert("Please enter a medical report to analyze");
-      return;
-    }
+  if (!reportText.trim()) {
+    alert("Please enter a medical report to analyze");
+    return;
+  }
 
-    setLoading(true);
-    setResult(null);
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chatbot/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reportText }),
-      });
+  setLoading(true);
+  setResult(null);
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/reports/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reportText }),
+    });
 
-      const data = await response.json();
-      setResult(data);
-    } catch (error) {
-      console.error("Error analyzing report:", error);
-      setResult({
-        summary: "Error analyzing report",
-        riskLevel: "Unknown",
-        findings: ["Failed to analyze report. Please try again."],
-      });
-    }
-    setLoading(false);
-  };
+    const data = await res.json(); // ✅ CORRECTED LINE
+    setResult(data);
+  } catch (error) {
+    console.error("Error analyzing report:", error);
+    setResult({
+      summary: "Error analyzing report",
+      riskLevel: "Unknown",
+      findings: ["Failed to analyze report. Please try again."],
+    });
+  }
+  setLoading(false);
+};
+
 
   return (
     <div className="relative min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
