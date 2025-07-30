@@ -25,7 +25,6 @@ export default function Register() {
     if (res.ok) {
       // Auto login after registration
       const loginRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`, {
-
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -34,7 +33,7 @@ export default function Register() {
       const loginData = await loginRes.json();
       if (loginRes.ok) {
         login(loginData.token, loginData.name);
-        router.push("/"); // 🔁 Redirect to home
+        router.push("/");
       } else {
         alert("Login failed after registration");
       }
@@ -46,7 +45,7 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50 p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
-        {/* Header with gradient */}
+        {/* Header */}
         <div className="bg-gradient-to-r from-green-500 to-blue-500 p-6 text-center">
           <h2 className="text-3xl font-bold text-white">Create Account</h2>
           <p className="text-blue-100 mt-1">Join MediVerse today</p>
@@ -66,7 +65,7 @@ export default function Register() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 text-base placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-300 outline-none transition-colors duration-200"
               />
             </div>
 
@@ -81,7 +80,7 @@ export default function Register() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 text-base placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-300 outline-none transition-colors duration-200"
               />
             </div>
 
@@ -96,7 +95,7 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 text-base placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-300 outline-none transition-colors duration-200"
               />
             </div>
 

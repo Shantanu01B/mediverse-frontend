@@ -37,7 +37,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50 p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
-        {/* Header with gradient */}
+        {/* Header */}
         <div className="bg-gradient-to-r from-green-500 to-blue-500 p-6 text-center">
           <h2 className="text-3xl font-bold text-white">Welcome Back</h2>
           <p className="text-blue-100 mt-1">Sign in to your MediVerse account</p>
@@ -73,7 +73,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 text-base placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-300 outline-none transition-colors duration-200"
               />
             </div>
 
@@ -88,7 +88,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 text-base placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-300 outline-none transition-colors duration-200"
               />
             </div>
 
@@ -102,7 +102,7 @@ export default function Login() {
             </div>
           </form>
 
-          {/* Additional Links */}
+          {/* Footer Link */}
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-600">
               Don't have an account?{" "}

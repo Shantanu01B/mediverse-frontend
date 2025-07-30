@@ -1,25 +1,30 @@
 'use client';
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState, useContext } from 'react';
+import { useRouter } from 'next/navigation';
+import { AuthContext } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import {
   FaArrowRight, FaCheckCircle, FaShieldAlt, FaHeartbeat,
   FaCommentAlt, FaFlask, FaPills, FaChartLine, FaDna,
   FaRobot, FaLock, FaUserMd, FaFileMedical, FaStethoscope,
-  FaRegStar, FaStar, FaRegEnvelope, FaMapMarkerAlt, FaPhoneAlt,
-  FaNotesMedical, FaBrain, FaMicroscope
+  FaStar, FaRegEnvelope, FaMapMarkerAlt, FaPhoneAlt,
+  FaMicroscope
 } from 'react-icons/fa';
 
 export default function Home() {
+  const router = useRouter();
+
+  // AuthContext includes token (the login status) and user details
+  const { token } = useContext(AuthContext);
+
+  // Feature auto-rotator for "Why MediVerse"
   const [currentFeature, setCurrentFeature] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Replace this with your actual login state logic
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   useEffect(() => {
     document.title = "MediVerse | Home";
-    // Auto-rotate features
     const interval = setInterval(() => {
       setIsVisible(false);
       setTimeout(() => {
@@ -30,7 +35,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Feature cards data with updated "Disease Info" card instead of "More Features Coming Soon"
+  // All your feature cards
   const featureCards = [
     {
       title: "Symptom Checker",
@@ -38,7 +43,7 @@ export default function Home() {
       icon: <FaStethoscope className="text-4xl" />,
       color: "bg-blue-100 hover:bg-blue-200",
       iconColor: "text-blue-600",
-      path: "/symptom-checker"
+      path: "/symptom-checker",
     },
     {
       title: "Medicine Info",
@@ -46,7 +51,7 @@ export default function Home() {
       icon: <FaPills className="text-4xl" />,
       color: "bg-green-100 hover:bg-green-200",
       iconColor: "text-green-600",
-      path: "/medicines"
+      path: "/medicines",
     },
     {
       title: "Report Analyzer",
@@ -54,7 +59,7 @@ export default function Home() {
       icon: <FaChartLine className="text-4xl" />,
       color: "bg-purple-100 hover:bg-purple-200",
       iconColor: "text-purple-600",
-      path: "/report-analyzer"
+      path: "/report-analyzer",
     },
     {
       title: "Genetic Risk",
@@ -62,7 +67,7 @@ export default function Home() {
       icon: <FaDna className="text-4xl" />,
       color: "bg-yellow-100 hover:bg-yellow-200",
       iconColor: "text-yellow-600",
-      path: "/genetic-risk"
+      path: "/genetic-risk",
     },
     {
       title: "Health Chatbot",
@@ -70,7 +75,7 @@ export default function Home() {
       icon: <FaRobot className="text-4xl" />,
       color: "bg-red-100 hover:bg-red-200",
       iconColor: "text-red-600",
-      path: "/chatbot"
+      path: "/chatbot",
     },
     {
       title: "Disease Info",
@@ -78,10 +83,21 @@ export default function Home() {
       icon: <FaMicroscope className="text-4xl" />,
       color: "bg-indigo-100 hover:bg-indigo-200",
       iconColor: "text-indigo-600",
-      path: "/disease-info"
+      path: "/disease-info",
     }
   ];
 
+  // Feature card click handler – does login redirect if needed
+  function handleFeatureClick(targetPath) {
+    if (token) {
+      router.push(targetPath);
+    } else {
+      // Add ?next=targetPath for redirect after login
+      router.push(`/login?next=${encodeURIComponent(targetPath)}`);
+    }
+  }
+
+  // Sliding features (section below cards)
   const features = [
     {
       title: "AI-Powered Symptom Analysis",
@@ -103,6 +119,7 @@ export default function Home() {
     }
   ];
 
+  // Testimonials for the bottom carousel
   const testimonials = [
     {
       quote: "MediVerse helped me understand my symptoms before visiting the doctor. Saved me time and anxiety!",
@@ -121,9 +138,6 @@ export default function Home() {
     }
   ];
 
- 
-
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-800 overflow-x-hidden">
       {/* Hero Section */}
@@ -135,12 +149,11 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="w-full md:w-1/2 z-10"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-800 mb-4 sm:mb-6 leading-tight text-center md:text-left">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-800 mb-4 sm:mb-6 leading-tight text-center md:text-left tracking-tight">
               Revolutionizing <span className="text-green-600">Healthcare</span> with AI
             </h1>
             <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-700 leading-relaxed text-center md:text-left">
-              Your personalized health companion. Get accurate symptom analysis, medicine information, 
-              and health insights powered by artificial intelligence.
+              Your personalized health companion. Get accurate symptom analysis, medicine information, and health insights powered by artificial intelligence.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
               <Link href="/register">
@@ -148,7 +161,7 @@ export default function Home() {
                   Get Started <FaArrowRight className="ml-2" />
                 </button>
               </Link>
-              <Link href="#">
+              <Link href="/demo">
                 <button className="w-full sm:w-auto border-2 border-blue-600 text-blue-700 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-blue-50 transition duration-300">
                   Live Demo
                 </button>
@@ -178,6 +191,7 @@ export default function Home() {
             transition={{ duration: 1 }}
             className="w-full md:w-[45%] mt-10 md:mt-0 relative flex justify-center"
           >
+            {/* Blobs and Dashboard */}
             <div className="absolute -top-12 -right-10 w-40 h-40 sm:w-56 sm:h-56 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
             <div className="absolute -bottom-12 -left-10 w-40 h-40 sm:w-56 sm:h-56 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
             <div className="absolute top-0 left-1/3 w-28 h-28 sm:w-48 sm:h-48 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
@@ -206,48 +220,49 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Feature Cards Section */}
-      <section className="py-10 md:py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 md:mb-16"
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-800 mb-2 md:mb-4">Our Key Features</h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-xl mx-auto">
-              Explore our comprehensive suite of health tools designed for your needs
-            </p>
-          </motion.div>
+      {/* Ultra-Compact Fancy Feature Cards */}
+<section className="py-10 px-4 sm:px-6">
+  <div className="max-w-6xl mx-auto">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      className="text-center mb-10"
+    >
+      <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent mb-2">AI Health Tools</h2>
+      <p className="text-sm text-gray-500 max-w-md mx-auto">Smart features for smarter health decisions</p>
+    </motion.div>
 
-          <div className="grid gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {featureCards.map((card, index) => (
-              // Not using Link because of the conditional redirect - using div with onClick
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -5 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className={`${card.color} p-6 sm:p-8 rounded-2xl shadow-md transition-all duration-300 cursor-pointer flex flex-col h-full`}
-                onClick={() => handleFeatureClick(card.path)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { handleFeatureClick(card.path); } }}
-              >
-                <div className={`${card.iconColor} mb-4`}>
-                  {card.icon}
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-gray-800">{card.title}</h3>
-                <p className="text-gray-700 text-sm sm:text-base mb-4 flex-grow">{card.desc}</p>
-                
-              </motion.div>
-            ))}
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      {featureCards.map((card, index) => (
+        <motion.div
+          key={index}
+          whileHover={{ y: -3, scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className={`${card.color} p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-150 cursor-pointer border border-opacity-20 border-gray-200 flex flex-col`}
+          onClick={() => handleFeatureClick(card.path)}
+        >
+          {/* Floating Icon */}
+          <div className={`${card.iconColor} mb-3 p-2 rounded-lg bg-white bg-opacity-80 w-10 h-10 flex items-center justify-center shadow-xs mx-auto`}>
+            {card.icon}
           </div>
-        </div>
-      </section>
+          
+          {/* Compact Content */}
+          <h3 className="text-sm font-semibold text-center text-gray-800 mb-1 line-clamp-1">{card.title}</h3>
+          <p className="text-xs text-gray-600 text-center mb-3 line-clamp-2">{card.desc}</p>
+          
+          {/* Micro Button */}
+          <button className={`text-xs py-1.5 px-3 rounded-md font-medium mx-auto flex items-center ${
+            token 
+              ? "bg-white text-blue-600 border border-blue-200 hover:bg-blue-50"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}>
+            {token ? "Use Tool" : "Unlock"}
+          </button>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Sliding Features Section */}
       <section className="py-10 md:py-16 px-4 sm:px-6">
